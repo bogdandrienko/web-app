@@ -20,10 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ywqo&h1qj$(vrw&wkv!ko-x6*0(ovqn653idp8e-(r%e44ut$7'
+SECRET_KEY = 'django-insecure-t9j!w9s2r$tx&=^bnazk-9x$)gr7rc_-=)7*rt0u^wwt(6kaza'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
+    'psycopg2',
 
-    'app_admin.apps.AppAdminConfig',
+    'app_django.apps.AppDjangoConfig',
 ]
 
 MIDDLEWARE = [
@@ -66,10 +66,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
-                'django.template.context_processors.request',
-
-                'app_admin.context_processors.user_counter'
             ],
         },
     },
@@ -83,12 +79,15 @@ WSGI_APPLICATION = 'app_settings.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'prod_db',
+        'USER': 'admin',
+        'PASSWORD': 'devpass',
+        'HOST': 'postgresdb',
+        'PORT': 5432
     }
 }
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -112,13 +111,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Etc/GMT-6'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
-USE_L10N = True
 
 USE_TZ = True
 
@@ -126,53 +123,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_DIR = Path(BASE_DIR, 'static')
-STATIC_ROOT = Path(BASE_DIR, 'staticroot/')
-STATICFILES_DIRS = [Path(BASE_DIR, 'static')]
-MEDIA_URL = '/media/'
-MEDIA_ROOT = Path(BASE_DIR, 'static/media')
+STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-FROM_EMAIL = 'bogdandrienko@gmail.com'
-EMAIL_ADMIN = 'bogdandrienko@gmail.com'
-# yandex
-yandex = False
-if yandex:
-    EMAIL_HOST = 'smtp.yandex.ru'
-    EMAIL_HOST_USER = 'eevee.cycle'
-    EMAIL_HOST_PASSWORD = '31284bogdan'
-    EMAIL_PORT = 465
-    EMAIL_USE_TLS = False
-    EMAIL_USE_SSL = True
-else:
-    EMAIL_HOST = '192.168.1.100'
-    # ip_ = '192.168.1.100'
-    EMAIL_HOST_USER = ''
-    # password_ = 'webapp'
-    EMAIL_HOST_PASSWORD = ''
-    # password_ = 'ddf770Tz4'
-    EMAIL_PORT = 25
-    # pop = 995
-    EMAIL_USE_TLS = True
-    EMAIL_USE_SSL = False
-
-host: EMAIL_HOST
-port: EMAIL_PORT
-username: EMAIL_HOST_USER
-password: EMAIL_HOST_PASSWORD
-use_tls: EMAIL_USE_TLS
-use_ssl: EMAIL_USE_SSL
-
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
